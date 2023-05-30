@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" type="text/css" href="todolist.css">
+</head>
+     <body>
+        <div class="container">
+            <h1>To-Do List</h1>
+            <input type="text" id="todo-input" placeholder="Add a new task">
+            <button onclick="addTask()">Add</button>
+            <h3>Pending Tasks</h3>
+            <ul id="pending-list"></ul>
+            <h3>Completed Tasks</h3>
+            <ul id="completed-list"></ul>
+        </div>
+
+   <script>
+         function addTask() {
+            var taskInput = document.getElementById("todo-input");
+            var taskText = taskInput.value;
+
+            var li = document.createElement("li");
+
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.addEventListener("change", function () {
+                moveTask(this);
+            });
+
+            var label = document.createElement("label");
+            label.innerText = taskText;
+
+            li.appendChild(checkbox);
+            li.appendChild(label);
+
+            var pendingList = document.getElementById("pending-list");
+            pendingList.appendChild(li);
+
+            taskInput.value = "";
+        }
+
+        function moveTask(checkbox) {
+            var li = checkbox.parentNode;
+
+            var currentList = li.parentNode;
+            currentList.removeChild(li);
+
+            if (checkbox.checked) {
+                var completedList = document.getElementById("completed-list");
+                completedList.appendChild(li);
+                var deleteButton = document.createElement("button");
+                deleteButton.innerText = "Delete";
+                deleteButton.addEventListener("click", function () {
+                    deleteTask(this);
+                });
+                li.appendChild(deleteButton);
+            } else {
+                var pendingList = document.getElementById("pending-list");
+                pendingList.appendChild(li);
+                li.querySelector("button").remove();
+            }
+        }
+
+        function deleteTask(button) {
+            var li = button.parentNode;
+            var completedList = document.getElementById("completed-list");
+            completedList.removeChild(li);
+        }
+  </script>
+</body>
+</html>
